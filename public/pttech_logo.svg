@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 520" fill="currentColor">
+  <!-- Microchip outline -->
+  <g transform="translate(50, 20)">
+    <!-- Top pins -->
+    <rect x="70" y="0" width="12" height="35" rx="3" />
+    <rect x="110" y="0" width="12" height="35" rx="3" />
+    <rect x="150" y="0" width="12" height="35" rx="3" />
+    <rect x="190" y="0" width="12" height="35" rx="3" />
+    
+    <!-- Bottom pins -->
+    <rect x="70" y="265" width="12" height="35" rx="3" />
+    <rect x="110" y="265" width="12" height="35" rx="3" />
+    <rect x="150" y="265" width="12" height="35" rx="3" />
+    <rect x="190" y="265" width="12" height="35" rx="3" />
+    
+    <!-- Left pins -->
+    <rect x="0" y="70" width="35" height="12" rx="3" />
+    <rect x="0" y="110" width="35" height="12" rx="3" />
+    <rect x="0" y="150" width="35" height="12" rx="3" />
+    <rect x="0" y="190" width="35" height="12" rx="3" />
+    
+    <!-- Right pins -->
+    <rect x="265" y="70" width="35" height="12" rx="3" />
+    <rect x="265" y="110" width="35" height="12" rx="3" />
+    <rect x="265" y="150" width="35" height="12" rx="3" />
+    <rect x="265" y="190" width="35" height="12" rx="3" />
+
+    <!-- Outer Chip Body -->
+    <path d="M 50 30 
+             H 250 
+             a 15 15 0 0 1 15 15 
+             V 250 
+             a 15 15 0 0 1 -15 15 
+             H 50 
+             a 15 15 0 0 1 -15 -15 
+             V 45 
+             a 15 15 0 0 1 15 -15 Z" 
+          fill="none" stroke="currentColor" stroke-width="16" stroke-linejoin="miter" />
+
+    <!-- Inner Letter T -->
+    <path d="M 85 75 H 215 V 110 H 170 V 225 H 130 V 110 H 85 Z" fill="currentColor" />
+  </g>
+
+  <!-- PTTECH Text -->
+  <text x="200" y="390" text-anchor="middle" font-family="'Inter', 'Arial Black', sans-serif" font-weight="900" font-size="52" letter-spacing="4">PTTECH</text>
+  <!-- CORP. Text -->
+  <text x="200" y="450" text-anchor="middle" font-family="'Inter', 'Arial Black', sans-serif" font-weight="900" font-size="44" letter-spacing="6">CORP.</text>
+</svg>

@@ -1,0 +1,165 @@
+# Archivos y carpetas específicos del proyecto
+build/
+*.exe
+*.apk
+*.aab
+*.zip
+*.jar
+*.dill
+*.pkg
+*.aar
+__pycache__/
+*.pyc
+
+# Archivos generados por Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+
+# Archivos generados por Android
+**/android/.gradle
+**/android/captures/
+**/android/local.properties
+**/android/GeneratedPluginRegistrant.*
+**/android/app/debug
+**/android/app/profile
+**/android/app/release
+**/android/**/build/
+**/build/
+
+# Archivos generados por iOS
+**/ios/.symlinks/
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/app.flx
+**/ios/Flutter/app.zip
+**/ios/Flutter/flutter_assets/
+**/ios/Runner.xcworkspace
+**/ios/Pods/
+**/ios/*.mode1v3
+**/ios/*.mode2v3
+**/ios/*.moved-aside
+**/ios/*.pbxuser
+**/ios/*.perspectivev3
+**/ios/*sync/
+**/ios/.sconsign.dblite
+**/ios/.tags*
+**/ios/.vagrant/
+**/ios/DerivedData/
+**/ios/Icon?
+**/ios/Pods/
+**/ios/profile
+**/ios/xcuserdata/
+
+# Archivos de Visual Studio Code
+.vscode/
+*.code-workspace
+
+# Archivos de Python
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Otros archivos del sistema
+.DS_Store
+.idea/
+*.iml
+*.log
+*.swp
+*.swo
+
+# Automatización específica
+Automatización de Tareas.exe
+Automatización de Tareas.spec
+build/Automatización de Tareas/
+build/apk/
+build/flutter/app/
+build/flutter/build/
+
+# Carpetas de compilación de Android
+**/android/.gradle
+**/android/captures/
+**/android/local.properties
+**/android/GeneratedPluginRegistrant.*
+**/android/app/debug
+**/android/app/profile
+**/android/app/release
+
+# Carpetas de compilación de iOS
+**/ios/.symlinks/
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/app.flx
+**/ios/Flutter/app.zip
+**/ios/Flutter/flutter_assets/
+**/ios/Runner.xcworkspace
+**/ios/Pods/
+**/ios/*.mode1v3
+**/ios/*.mode2v3
+**/ios/*.moved-aside
+**/ios/*.pbxuser
+**/ios/*.perspectivev3
+**/ios/*sync/
+**/ios/.sconsign.dblite
+**/ios/.tags*
+**/ios/.vagrant/
+**/ios/DerivedData/
+**/ios/Icon?
+**/ios/Pods/
+**/ios/profile
+**/ios/xcuserdata/
+
+# Archivos de Visual Studio Code
+.vscode/
+*.code-workspace
+
+# Archivos de Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Otros archivos del sistema
+.DS_Store
+.idea/
+*.iml
+*.log
+*.swp
+*.swo

@@ -1,0 +1,36 @@
+name: Build AAB (Buildozer)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Show repo root
+        run: ls -la
+
+      - name: Build AAB with Buildozer (Docker image)
+        env:
+          HOME: /home/kivy
+        run: |
+          # Use the official Buildozer Docker image to avoid installing system deps
+          docker run --rm \
+            -v "${{ github.workspace }}:/home/kivy/hostcwd" \
+            -w /home/kivy/hostcwd \
+            kivy/buildozer:latest \
+            buildozer -v android aab
+
+      - name: Collect generated AAB
+        # buildozer places bundles under bin/ by default; adjust if your spec differs
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-aab
+          path: |
+            bin/*.aab
+            bin/**/*.aab

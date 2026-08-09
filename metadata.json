@@ -1,0 +1,8 @@
+{
+  "name": "Automatización de Tareas",
+  "description": "Herramienta web para eliminar archivos duplicados, organizar por tipo, redimensionar imágenes y renombrar en serie.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

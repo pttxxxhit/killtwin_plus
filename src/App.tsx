@@ -23,7 +23,8 @@ import {
   HardDrive,
   Info,
   ExternalLink,
-  Globe
+  Globe,
+  Smartphone
 } from 'lucide-react';
 import {
   FileItem,
@@ -144,8 +145,10 @@ export default function App() {
   };
 
   const handleDupFilesSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) return;
-    loadRawFilesForDuplicates(Array.from(e.target.files));
+    if (e.target.files && e.target.files.length > 0) {
+      loadRawFilesForDuplicates(Array.from(e.target.files));
+    }
+    e.target.value = '';
   };
 
   const handleDupDrop = async (e: React.DragEvent) => {
@@ -244,8 +247,10 @@ export default function App() {
   };
 
   const handleOrgFilesSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) return;
-    loadRawFilesForOrganize(Array.from(e.target.files));
+    if (e.target.files && e.target.files.length > 0) {
+      loadRawFilesForOrganize(Array.from(e.target.files));
+    }
+    e.target.value = '';
   };
 
   const handleOrgDrop = async (e: React.DragEvent) => {
@@ -326,8 +331,10 @@ export default function App() {
   };
 
   const handleResFilesSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) return;
-    loadRawFilesForResize(Array.from(e.target.files));
+    if (e.target.files && e.target.files.length > 0) {
+      loadRawFilesForResize(Array.from(e.target.files));
+    }
+    e.target.value = '';
   };
 
   const handleResDrop = async (e: React.DragEvent) => {
@@ -414,8 +421,10 @@ export default function App() {
   };
 
   const handleRenFilesSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) return;
-    loadRawFilesForRename(Array.from(e.target.files));
+    if (e.target.files && e.target.files.length > 0) {
+      loadRawFilesForRename(Array.from(e.target.files));
+    }
+    e.target.value = '';
   };
 
   const handleRenDrop = async (e: React.DragEvent) => {
@@ -612,6 +621,17 @@ export default function App() {
                 </span>
               </div>
 
+              {/* Mobile / Android APK advice banner */}
+              <div className="bg-amber-950/20 border border-amber-800/40 rounded-xl p-3 flex items-start gap-2.5 text-xs text-amber-200/90">
+                <Smartphone className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                <div>
+                  <strong className="text-amber-300">¿Estás en celular o APK Android?</strong>
+                  <p className="text-amber-200/70 text-[11px] mt-0.5">
+                    Si el selector de carpetas se cierra al tocar la flecha 'Atrás', usa el botón <strong>"Seleccionar Archivos"</strong>. Mantén presionado un archivo en tu celular y toca <i>"Seleccionar todos"</i> para cargar la carpeta completa sin volver atrás.
+                  </p>
+                </div>
+              </div>
+
               {/* Upload & Controls Zone */}
               <div
                 onDragOver={(e) => e.preventDefault()}
@@ -647,15 +667,15 @@ export default function App() {
 
                     <label
                       htmlFor={dupFileInputId}
-                      className="cursor-pointer inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 text-blue-200 border border-slate-700 font-medium text-sm transition-all shadow-md"
+                      className="cursor-pointer inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-blue-200 border border-slate-700 font-medium text-sm transition-all shadow-md"
                     >
                       <FileText className="w-4 h-4 text-blue-400" />
-                      <span>Seleccionar Archivos</span>
+                      <span>Seleccionar Archivos (Recomendado en APK)</span>
                     </label>
 
                     <span className="text-xs text-blue-300/70 ml-1">
                       {dupFiles.length > 0
-                        ? `Carpeta: "${dupDirName || 'Seleccionada'}" (${dupFiles.length} archivos)`
+                        ? `Selección: "${dupDirName || 'Archivos'}" (${dupFiles.length} archivos)`
                         : 'O arrastra una carpeta aquí'}
                     </span>
                   </div>
@@ -683,6 +703,30 @@ export default function App() {
                     )}
                   </div>
                 </div>
+
+                {/* Banner when files are loaded & ready for scan */}
+                {dupFiles.length > 0 && !dupScanned && !dupScanning && (
+                  <div className="mt-4 pt-4 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-3 bg-emerald-950/40 p-3.5 rounded-xl border border-emerald-800/50">
+                    <div className="flex items-center gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+                      <div>
+                        <p className="text-sm font-semibold text-emerald-200">
+                          {dupFiles.length} archivo(s) listos para escanear
+                        </p>
+                        <p className="text-xs text-emerald-300/70">
+                          Origen: {dupDirName || 'Selección directa de archivos'}
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={runDuplicateScan}
+                      className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm transition-all shadow-lg shadow-emerald-950/60 flex items-center justify-center gap-2 animate-pulse"
+                    >
+                      <Search className="w-4 h-4" />
+                      <span>ESCANEAR AHORA</span>
+                    </button>
+                  </div>
+                )}
 
                 {dupScanning && scanProgress && (
                   <div className="mt-4 pt-4 border-t border-slate-800 flex flex-col gap-2">

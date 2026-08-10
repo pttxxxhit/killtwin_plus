@@ -20,7 +20,7 @@ Una aplicación móvil desarrollada con Flet (Python) para automatizar tareas co
 
 1. Clona este repositorio:
 ```bash
-git clone https://github.com/pttxxxhit/killtwin_plus.git
+git clone https://github.com/pttxxxhit/killtwin.git
 ```
 
 2. Instala las dependencias:

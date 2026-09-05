@@ -24,7 +24,11 @@ import {
   Info,
   ExternalLink,
   Globe,
-  Smartphone
+  Smartphone,
+  Sparkles,
+  Zap,
+  Camera,
+  Play
 } from 'lucide-react';
 import {
   FileItem,
@@ -36,6 +40,12 @@ import {
   createZipArchive,
   formatBytes
 } from './utils/fileUtils';
+import {
+  generateSampleDuplicates,
+  generateSampleOrganize,
+  generateSampleResize,
+  generateSampleRename
+} from './utils/sampleData';
 
 type ActiveTab = 'duplicates' | 'organize' | 'resize' | 'rename';
 
@@ -95,6 +105,19 @@ async function extractFilesFromDataTransfer(items: DataTransferItemList): Promis
 export default function App() {
   const [activeTab, setActiveTab] = useState<ActiveTab>('duplicates');
   const [snackMessage, setSnackMessage] = useState<{ text: string; type: 'success' | 'error' | 'info' } | null>(null);
+
+  // User Profile Avatar (Pug avatar default)
+  const [userAvatar, setUserAvatar] = useState<string>('/perfil.png');
+  const avatarInputId = useId();
+
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      const url = URL.createObjectURL(file);
+      setUserAvatar(url);
+      notify('Foto de perfil actualizada.', 'success');
+    }
+  };
 
   // Accessible unique IDs for file inputs
   const dupFolderInputId = useId();
@@ -465,14 +488,142 @@ export default function App() {
     notify(`Se renombraron y descargaron ${files.length} archivos exitosamente.`, 'success');
   };
 
+  // --- 1-CLICK TESTS FOR ALL 4 FUNCTIONS ---
+  const [testingDup, setTestingDup] = useState(false);
+  const [testingOrg, setTestingOrg] = useState(false);
+  const [testingRes, setTestingRes] = useState(false);
+  const [testingRen, setTestingRen] = useState(false);
+
+  const runTestDuplicates = async () => {
+    setTestingDup(true);
+    notify('Iniciando test: Generando 8 archivos en memoria con duplicados intencionales...', 'info');
+    try {
+      const sampleFiles = await generateSampleDuplicates();
+      const items: FileItem[] = sampleFiles.map((file) => ({
+        id: Math.random().toString(36).substring(2, 9),
+        file,
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        path: file.name,
+        previewUrl: file.type.startsWith('image/') ? URL.createObjectURL(file) : undefined,
+      }));
+      setDupFiles(items);
+      setDupDirName('Test_Duplicados_KillTwin');
+      setDupScanning(true);
+      setScanProgress({ current: 0, total: items.length });
+      setScanErrorLogs([]);
+
+      const { duplicatesList, errorLogs } = await findDuplicates(items, (cur, tot) => {
+        setScanProgress({ current: cur, total: tot });
+      });
+
+      setDuplicateList(duplicatesList);
+      setScanErrorLogs(errorLogs);
+      setDupScanned(true);
+      notify(`¡Test de Duplicados Exitoso! Se detectaron ${duplicatesList.length} archivos duplicados listos para eliminar.`, 'success');
+    } catch (err: any) {
+      notify(`Error en test de duplicados: ${err.message}`, 'error');
+    } finally {
+      setDupScanning(false);
+      setScanProgress(null);
+      setTestingDup(false);
+    }
+  };
+
+  const runTestOrganize = async () => {
+    setTestingOrg(true);
+    notify('Iniciando test: Generando archivos de prueba de distintas categorías...', 'info');
+    try {
+      const sampleFiles = await generateSampleOrganize();
+      const items: FileItem[] = sampleFiles.map((file) => ({
+        id: Math.random().toString(36).substring(2, 9),
+        file,
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        path: file.name,
+      }));
+      setOrgFiles(items);
+      setOrgDirName('Test_Organizar_KillTwin');
+      const grouped = organizeFiles(items);
+      setOrganizedResult(grouped);
+      notify(`¡Test de Organización Exitoso! ${items.length} archivos clasificados en sus respectivas carpetas.`, 'success');
+    } catch (err: any) {
+      notify(`Error en test de organizar: ${err.message}`, 'error');
+    } finally {
+      setTestingOrg(false);
+    }
+  };
+
+  const runTestResize = async () => {
+    setTestingRes(true);
+    notify('Iniciando test: Cargando imagen del pug para redimensionado...', 'info');
+    try {
+      const sampleFiles = await generateSampleResize();
+      const items: FileItem[] = sampleFiles.map((file) => ({
+        id: Math.random().toString(36).substring(2, 9),
+        file,
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        previewUrl: URL.createObjectURL(file),
+      }));
+      setResFiles(items);
+      setResDirName('Test_Imagenes_Pug');
+      setWidthVal(400);
+      setHeightVal(400);
+      setResizing(true);
+
+      const results = [];
+      for (const item of items) {
+        const { blob, url } = await resizeImage(item.file, 400, 400);
+        results.push({
+          original: item,
+          resizedBlob: blob,
+          resizedUrl: url,
+          width: 400,
+          height: 400,
+          newName: `400x400_${item.name}`,
+        });
+      }
+      setResizedResults(results);
+      notify('¡Test de Redimensionado Exitoso! Imagen del pug redimensionada a 400x400 px.', 'success');
+    } catch (err: any) {
+      notify(`Error en test de redimensionar: ${err.message}`, 'error');
+    } finally {
+      setResizing(false);
+      setTestingRes(false);
+    }
+  };
+
+  const runTestRename = () => {
+    setTestingRen(true);
+    try {
+      notify('Iniciando test: Cargando archivos de muestra para renombrar...', 'info');
+      const sampleFiles = generateSampleRename();
+      const items: FileItem[] = sampleFiles.map((file) => ({
+        id: Math.random().toString(36).substring(2, 9),
+        file,
+        name: file.name,
+        size: file.size,
+        type: file.type,
+      }));
+      setRenFiles(items);
+      setRenDirName('Test_Renombrar_KillTwin');
+      const testPrefix = 'Documento_PTTECH';
+      setBaseName(testPrefix);
+      setRenamedPreview(generateSequentialNames(items, testPrefix));
+      notify('¡Test de Renombrado Exitoso! 5 archivos renombrados secuencialmente.', 'success');
+    } catch (err: any) {
+      notify(`Error en test de renombrar: ${err.message}`, 'error');
+    } finally {
+      setTestingRen(false);
+    }
+  };
+
   return (
     <div className="flex h-screen w-full bg-black text-blue-100 overflow-hidden font-sans relative">
-      {/* Semi-transparent background logo watermark */}
-      <div
-        className="pointer-events-none fixed inset-0 opacity-[0.06] bg-center bg-no-repeat bg-contain z-0 pointer-events-none"
-        style={{ backgroundImage: `url('/pttech_full_logo.png')` }}
-      />
-
       {/* Toast / Snackbar Notification */}
       {snackMessage && (
         <div
@@ -503,17 +654,41 @@ export default function App() {
         id="navigation-rail"
         className="w-24 md:w-56 bg-slate-900/90 border-r border-slate-800 flex flex-col items-center md:items-stretch py-6 px-2 md:px-3 select-none backdrop-blur-md z-10"
       >
-        <div className="flex items-center gap-3 px-2 mb-6">
-          <div className="w-10 h-10 rounded-xl bg-[#f5f2e6] border border-amber-300/50 p-0.5 flex items-center justify-center shrink-0 shadow-lg shadow-blue-950/50 overflow-hidden">
+        {/* App Title Header */}
+        <div className="hidden md:block px-2 mb-4">
+          <h1 className="font-bold text-base tracking-wide text-white">KillTwin</h1>
+          <p className="text-[10px] text-amber-400 font-semibold tracking-wider uppercase">PTTECH Corp</p>
+        </div>
+
+        {/* User Profile Avatar Card with Pug Face */}
+        <div className="w-full mb-5 p-2 md:p-2.5 rounded-xl bg-slate-800/60 border border-slate-700/70 flex items-center gap-2.5 shadow-md">
+          <div className="relative group shrink-0">
             <img
-              src="/pttech_full_logo.png"
-              alt="PTTECH Corp Logo"
-              className="w-full h-full object-contain rounded-lg"
+              src={userAvatar}
+              alt="Avatar Pug"
+              className="w-10 h-10 md:w-11 md:h-11 rounded-full object-cover border-2 border-amber-400 shadow-md shadow-amber-950/40 bg-[#f8e7ce]"
+            />
+            <label
+              htmlFor={avatarInputId}
+              className="absolute -bottom-1 -right-1 p-1 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-full cursor-pointer transition-colors shadow"
+              title="Cambiar foto de usuario"
+            >
+              <Camera className="w-2.5 h-2.5" />
+            </label>
+            <input
+              id={avatarInputId}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleAvatarChange}
             />
           </div>
           <div className="hidden md:block min-w-0">
-            <h1 className="font-bold text-sm tracking-wide text-white truncate">KillTwin</h1>
-            <p className="text-[10px] text-blue-300/70 font-semibold tracking-wider uppercase truncate">PTTECH Corp</p>
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs font-bold text-white truncate">Usuario</span>
+              <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" title="En línea"></span>
+            </div>
+            <p className="text-[10px] text-amber-300 font-semibold tracking-wide truncate">KillTwin Pro</p>
           </div>
         </div>
 
@@ -672,6 +847,18 @@ export default function App() {
                       <FileText className="w-4 h-4 text-blue-400" />
                       <span>Seleccionar Archivos (Recomendado en APK)</span>
                     </label>
+
+                    <button
+                      id="test-duplicates-btn"
+                      type="button"
+                      onClick={runTestDuplicates}
+                      disabled={testingDup || dupScanning}
+                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/50 font-semibold text-sm transition-all shadow-md shadow-amber-950/40"
+                      title="Genera 8 archivos de prueba en memoria y ejecuta el escáner automáticamente"
+                    >
+                      <Zap className="w-4 h-4 text-amber-400" />
+                      <span>{testingDup ? 'Probando...' : '⚡ Probar con Archivos de Ejemplo (1-Clic)'}</span>
+                    </button>
 
                     <span className="text-xs text-blue-300/70 ml-1">
                       {dupFiles.length > 0
@@ -918,6 +1105,18 @@ export default function App() {
                     <span>Seleccionar Archivos</span>
                   </label>
 
+                  <button
+                    id="test-organize-btn"
+                    type="button"
+                    onClick={runTestOrganize}
+                    disabled={testingOrg}
+                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/50 font-semibold text-sm transition-all shadow-md shadow-amber-950/40"
+                    title="Genera archivos de muestra y los organiza en categorías"
+                  >
+                    <Zap className="w-4 h-4 text-amber-400" />
+                    <span>{testingOrg ? 'Organizando...' : '⚡ Probar con Archivos de Ejemplo (1-Clic)'}</span>
+                  </button>
+
                   <span className="text-xs text-blue-300/70 ml-1">
                     {orgFiles.length > 0
                       ? `Carpeta: "${orgDirName || 'Seleccionada'}" (${orgFiles.length} archivos)`
@@ -1081,6 +1280,18 @@ export default function App() {
                       <ImageIcon className="w-4 h-4 text-blue-400" />
                       <span>Seleccionar Imágenes</span>
                     </label>
+
+                    <button
+                      id="test-resize-btn"
+                      type="button"
+                      onClick={runTestResize}
+                      disabled={testingRes || resizing}
+                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/50 font-semibold text-sm transition-all shadow-md shadow-amber-950/40"
+                      title="Carga la imagen del pug y la redimensiona a 400x400 px para verificar la función"
+                    >
+                      <Zap className="w-4 h-4 text-amber-400" />
+                      <span>{testingRes ? 'Procesando...' : '⚡ Probar con Imagen del Pug (1-Clic)'}</span>
+                    </button>
 
                     <span className="text-xs text-blue-300/70 ml-1">
                       {resFiles.length > 0
@@ -1247,6 +1458,18 @@ export default function App() {
                       <FileText className="w-4 h-4 text-blue-400" />
                       <span>Seleccionar Archivos</span>
                     </label>
+
+                    <button
+                      id="test-rename-btn"
+                      type="button"
+                      onClick={runTestRename}
+                      disabled={testingRen}
+                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/50 font-semibold text-sm transition-all shadow-md shadow-amber-950/40"
+                      title="Carga 5 archivos de prueba y genera la vista previa de nombres secuenciales"
+                    >
+                      <Zap className="w-4 h-4 text-amber-400" />
+                      <span>{testingRen ? 'Generando...' : '⚡ Probar Renombrado de Ejemplo (1-Clic)'}</span>
+                    </button>
 
                     <span className="text-xs text-blue-300/70 ml-1">
                       {renFiles.length > 0

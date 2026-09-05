@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="65%">
+      <stop offset="0%" stop-color="#FAF0DC"/>
+      <stop offset="100%" stop-color="#F3DFC0"/>
+    </radialGradient>
+    <filter id="dropShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000000" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" fill="url(#bgGrad)"/>
+
+  <!-- Top-left geometric backdrop details -->
+  <path d="M-20,40 L160,-20 M-10,130 L90,130 L180,60" stroke="#1B4B42" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.9"/>
+  <polygon points="-40,160 40,160 40,240 -40,240" fill="#1B4B42" opacity="0.85"/>
+
+  <!-- Body / Neck -->
+  <path d="M120,470 Q256,510 390,470 L400,530 L110,530 Z" fill="#E5B67D" stroke="#24150F" stroke-width="8"/>
+
+  <!-- Orange collar / shirt on bottom-left -->
+  <path d="M80,480 L110,430 Q130,490 100,520 Z" fill="#E86E18" stroke="#24150F" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M95,455 L85,530" stroke="#24150F" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- Left floppy ear -->
+  <path d="M165,110 C120,95 75,130 65,185 C55,240 105,280 135,270 C148,265 155,245 152,220 C150,195 156,150 165,110 Z" 
+        fill="#885338" stroke="#24150F" stroke-width="9" stroke-linejoin="round"/>
+
+  <!-- Right floppy ear -->
+  <path d="M360,110 C410,90 460,135 470,190 C480,245 425,285 395,270 C380,260 375,240 377,215 C380,185 372,145 360,110 Z" 
+        fill="#885338" stroke="#24150F" stroke-width="9" stroke-linejoin="round"/>
+
+  <!-- Head Base -->
+  <path d="M155,160 C130,230 115,310 145,395 C175,465 345,465 375,395 C405,310 390,230 365,160 C345,100 175,100 155,160 Z" 
+        fill="#E8B87C" stroke="#24150F" stroke-width="9" stroke-linejoin="round"/>
+
+  <!-- Forehead wrinkles -->
+  <path d="M256,115 L256,145" stroke="#24150F" stroke-width="7" stroke-linecap="round"/>
+  <path d="M230,150 Q240,165 245,178" stroke="#24150F" stroke-width="6" stroke-linecap="round" fill="none"/>
+  <path d="M282,150 Q272,165 267,178" stroke="#24150F" stroke-width="6" stroke-linecap="round" fill="none"/>
+  <path d="M210,160 Q225,172 235,182" stroke="#24150F" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <path d="M302,160 Q287,172 277,182" stroke="#24150F" stroke-width="5" stroke-linecap="round" fill="none"/>
+
+  <!-- Furrowed grumpy Eyebrows -->
+  <path d="M175,200 Q205,215 235,210" stroke="#24150F" stroke-width="9" stroke-linecap="round" fill="none"/>
+  <path d="M340,200 Q310,215 280,210" stroke="#24150F" stroke-width="9" stroke-linecap="round" fill="none"/>
+
+  <!-- Left Eye (grumpy flat top, rounded bottom) -->
+  <g id="leftEye">
+    <!-- Eye white -->
+    <path d="M155,225 Q205,220 230,225 C235,260 225,295 190,295 C155,295 148,260 155,225 Z" 
+          fill="#FFFFFF" stroke="#24150F" stroke-width="8" stroke-linejoin="round"/>
+    <!-- Iris & Pupil squinting sideways/left -->
+    <path d="M165,228 Q195,225 210,228 C215,258 208,288 185,288 C168,288 160,260 165,228 Z" 
+          fill="#24150F"/>
+    <!-- Iris tone -->
+    <path d="M188,235 C198,245 198,270 188,280 C198,275 204,260 202,240 Z" 
+          fill="#6B4B38" opacity="0.7"/>
+    <!-- White highlight dot -->
+    <circle cx="178" cy="248" r="6" fill="#FFFFFF"/>
+    <!-- Eyelid / brow crease -->
+    <path d="M150,220 Q190,210 235,220" stroke="#24150F" stroke-width="11" stroke-linecap="round" fill="none"/>
+  </g>
+
+  <!-- Right Eye (grumpy flat top, rounded bottom) -->
+  <g id="rightEye">
+    <!-- Eye white -->
+    <path d="M285,225 Q310,220 360,225 C365,260 358,295 325,295 C290,295 280,260 285,225 Z" 
+          fill="#FFFFFF" stroke="#24150F" stroke-width="8" stroke-linejoin="round"/>
+    <!-- Iris & Pupil squinting sideways/left -->
+    <path d="M295,228 Q325,225 340,228 C345,258 338,288 315,288 C298,288 290,260 295,228 Z" 
+          fill="#24150F"/>
+    <!-- Iris tone -->
+    <path d="M318,235 C328,245 328,270 318,280 C328,275 334,260 332,240 Z" 
+          fill="#6B4B38" opacity="0.7"/>
+    <!-- White highlight dot -->
+    <circle cx="308" cy="248" r="6" fill="#FFFFFF"/>
+    <!-- Eyelid / brow crease -->
+    <path d="M280,220 Q325,210 365,220" stroke="#24150F" stroke-width="11" stroke-linecap="round" fill="none"/>
+  </g>
+
+  <!-- Large dark brown Muzzle -->
+  <path d="M175,340 C175,275 340,275 340,340 C340,430 175,430 175,340 Z" 
+        fill="#653B26" stroke="#24150F" stroke-width="9" stroke-linejoin="round"/>
+
+  <!-- Muzzle texture dots -->
+  <g fill="#4A2B1C" opacity="0.7">
+    <circle cx="195" cy="355" r="2.5"/>
+    <circle cx="205" cy="370" r="2.5"/>
+    <circle cx="215" cy="350" r="2.5"/>
+    <circle cx="300" cy="350" r="2.5"/>
+    <circle cx="310" cy="370" r="2.5"/>
+    <circle cx="320" cy="355" r="2.5"/>
+  </g>
+
+  <!-- Nose -->
+  <path d="M230,285 C230,270 282,270 282,285 C285,310 270,328 256,328 C242,328 227,310 230,285 Z" 
+        fill="#221610" stroke="#24150F" stroke-width="4"/>
+  <!-- Nostrils -->
+  <ellipse cx="245" cy="298" rx="4.5" ry="6" fill="#120B08"/>
+  <ellipse cx="267" cy="298" rx="4.5" ry="6" fill="#120B08"/>
+  <!-- Nose highlight -->
+  <path d="M248,278 Q256,274 264,278" stroke="#544138" stroke-width="3" stroke-linecap="round" fill="none"/>
+
+  <!-- Downward grumpy frowning mouth -->
+  <path d="M220,380 Q256,345 292,380" stroke="#24150F" stroke-width="8" stroke-linecap="round" fill="none"/>
+  <!-- Chin shadow/crease -->
+  <path d="M242,402 Q256,408 270,402" stroke="#4A2B1C" stroke-width="4" stroke-linecap="round" fill="none"/>
+</svg>
